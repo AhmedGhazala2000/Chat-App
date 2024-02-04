@@ -1,9 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
 import 'package:chat_app/constant.dart';
 import 'package:chat_app/helper/show_snack_bar.dart';
-import 'package:chat_app/widgets/buttons.dart';
-import 'package:chat_app/widgets/text_form_field.dart';
+import 'package:chat_app/widgets/custom_buttons.dart';
+import 'package:chat_app/widgets/custom_text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -17,12 +18,9 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  TextEditingController? emailController = TextEditingController();
-
-  TextEditingController? passwordController = TextEditingController();
-
+  String? email, password;
   GlobalKey<FormState> formKey = GlobalKey();
-
+  AutovalidateMode? autoValidateMode = AutovalidateMode.disabled;
   bool isLoading = false;
 
   @override
@@ -35,6 +33,7 @@ class _RegisterState extends State<Register> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Form(
             key: formKey,
+            autovalidateMode: autoValidateMode,
             child: ListView(
               children: [
                 const SizedBox(
@@ -67,7 +66,9 @@ class _RegisterState extends State<Register> {
                   height: 15,
                 ),
                 CustomTextFormField(
-                  controller: emailController,
+                  onSaved: (value) {
+                    email = value;
+                  },
                   text: 'Email',
                   textInputType: TextInputType.emailAddress,
                   preIcon: Icons.email,
@@ -76,7 +77,9 @@ class _RegisterState extends State<Register> {
                   height: 10,
                 ),
                 CustomTextFormField(
-                  controller: passwordController,
+                  onSaved: (value) {
+                    password = value;
+                  },
                   text: 'Password',
                   textInputType: TextInputType.visiblePassword,
                   preIcon: Icons.lock,
@@ -89,12 +92,13 @@ class _RegisterState extends State<Register> {
                   text: 'Register',
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
                       isLoading = true;
                       setState(() {});
                       try {
                         await userRegister();
                         showSnackBar(context,
-                            message: 'Success, please Log In.');
+                            message: 'Success, Please Log In.');
                         Navigator.pop(context);
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
@@ -105,17 +109,21 @@ class _RegisterState extends State<Register> {
                               message:
                                   'The account already exists for that email.');
                         } else {
+                          log(e.toString());
                           showSnackBar(context, message: e.message.toString());
                         }
                       } catch (e) {
+                        log(e.toString());
                         showSnackBar(context,
-                            message: 'there was an error, try later !');
+                            message: 'There was an error, Please try later !');
                       }
                       isLoading = false;
                       setState(() {});
                     } else {
                       showSnackBar(context,
-                          message: 'please, enter the required fields');
+                          message: 'Please enter the required fields');
+                      autoValidateMode = AutovalidateMode.always;
+                      setState(() {});
                     }
                   },
                 ),
@@ -123,7 +131,7 @@ class _RegisterState extends State<Register> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'already have an account ?',
+                      'Already have an account ?',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -145,9 +153,9 @@ class _RegisterState extends State<Register> {
   }
 
   Future<void> userRegister() async {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailController!.text,
-      password: passwordController!.text,
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email!,
+      password: password!,
     );
   }
 }
