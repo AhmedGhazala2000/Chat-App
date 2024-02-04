@@ -27,6 +27,7 @@ class _LogInState extends State<LogIn> {
   AutovalidateMode? autoValidateMode = AutovalidateMode.disabled;
   bool isLoading = false;
   String? userId;
+  bool isVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +91,16 @@ class _LogInState extends State<LogIn> {
                   text: 'Password',
                   textInputType: TextInputType.visiblePassword,
                   preIcon: Icons.lock,
-                  obscureText: true,
+                  sufIcon: IconButton(
+                    icon: Icon(
+                      isVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      isVisible = !isVisible;
+                      setState(() {});
+                    },
+                  ),
+                  obscureText: isVisible,
                 ),
                 const SizedBox(
                   height: 20,

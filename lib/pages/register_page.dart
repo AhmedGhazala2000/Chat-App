@@ -22,6 +22,7 @@ class _RegisterState extends State<Register> {
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode? autoValidateMode = AutovalidateMode.disabled;
   bool isLoading = false;
+  bool isVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +84,16 @@ class _RegisterState extends State<Register> {
                   text: 'Password',
                   textInputType: TextInputType.visiblePassword,
                   preIcon: Icons.lock,
-                  obscureText: true,
+                  sufIcon: IconButton(
+                    icon: Icon(
+                      isVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      isVisible = !isVisible;
+                      setState(() {});
+                    },
+                  ),
+                  obscureText: isVisible,
                 ),
                 const SizedBox(
                   height: 20,

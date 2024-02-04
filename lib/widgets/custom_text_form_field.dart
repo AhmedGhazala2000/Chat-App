@@ -2,18 +2,21 @@ import 'package:chat_app/constant.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField(
-      {super.key,
-      required this.text,
-      this.textInputType,
-      required this.preIcon,
-      this.obscureText = false,
-      this.onSaved,
-      this.controller});
+  const CustomTextFormField({
+    super.key,
+    required this.text,
+    this.textInputType,
+    required this.preIcon,
+    this.sufIcon,
+    this.obscureText = false,
+    this.onSaved,
+    this.controller,
+  });
 
   final String text;
   final TextInputType? textInputType;
   final IconData preIcon;
+  final Widget? sufIcon;
   final bool obscureText;
   final void Function(String?)? onSaved;
   final TextEditingController? controller;
@@ -33,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: textInputType,
       decoration: InputDecoration(
         prefixIcon: Icon(preIcon),
+        suffixIcon: sufIcon,
         hintText: text,
         hintStyle: const TextStyle(color: kSecondColor),
         border: customBorder(color: kSecondColor),
