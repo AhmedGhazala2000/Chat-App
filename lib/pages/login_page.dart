@@ -111,8 +111,10 @@ class _LogInState extends State<LogIn> {
                       try {
                         await userLogIn();
                         showSnackBar(context, message: 'Log In Successfully');
-                        Navigator.pushReplacementNamed(context, ChatPage.id,
-                            arguments: userId);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          ChatPage.id,
+                        );
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           showSnackBar(context,
@@ -166,11 +168,9 @@ class _LogInState extends State<LogIn> {
   }
 
   Future<void> userLogIn() async {
-    final UserCredential user =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email!,
       password: password!,
     );
-    userId = user.user!.uid;
   }
 }

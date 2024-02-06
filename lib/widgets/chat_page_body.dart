@@ -2,6 +2,7 @@ import 'package:chat_app/constant.dart';
 import 'package:chat_app/models/messages_model.dart';
 import 'package:chat_app/widgets/bubbles_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatPageBody extends StatelessWidget {
@@ -15,10 +16,10 @@ class ChatPageBody extends StatelessWidget {
   final CollectionReference<Object?> messages;
   final TextEditingController textController = TextEditingController();
   final ScrollController scrollController = ScrollController();
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
-    String userId = ModalRoute.of(context)!.settings.arguments as String;
     return Column(
       children: [
         Expanded(
