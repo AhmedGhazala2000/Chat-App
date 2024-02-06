@@ -10,7 +10,6 @@ class CustomTextFormField extends StatelessWidget {
     this.sufIcon,
     this.obscureText = false,
     this.onSaved,
-    this.controller,
   });
 
   final String text;
@@ -19,12 +18,10 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? sufIcon;
   final bool obscureText;
   final void Function(String?)? onSaved;
-  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
       validator: (text) {
         if (text!.isEmpty) {
           return 'This field is required';

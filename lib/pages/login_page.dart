@@ -21,8 +21,6 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   String? email, password;
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode? autoValidateMode = AutovalidateMode.disabled;
   bool isLoading = false;
@@ -72,7 +70,6 @@ class _LogInState extends State<LogIn> {
                   height: 15,
                 ),
                 CustomTextFormField(
-                  controller: emailController,
                   onSaved: (value) {
                     email = value;
                   },
@@ -84,7 +81,6 @@ class _LogInState extends State<LogIn> {
                   height: 10,
                 ),
                 CustomTextFormField(
-                  controller: passwordController,
                   onSaved: (value) {
                     password = value;
                   },
@@ -115,10 +111,8 @@ class _LogInState extends State<LogIn> {
                       try {
                         await userLogIn();
                         showSnackBar(context, message: 'Log In Successfully');
-                        Navigator.pushNamed(context, ChatPage.id,
+                        Navigator.pushReplacementNamed(context, ChatPage.id,
                             arguments: userId);
-                        emailController.clear();
-                        passwordController.clear();
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           showSnackBar(context,
@@ -159,8 +153,6 @@ class _LogInState extends State<LogIn> {
                       text: 'Register',
                       onPressed: () {
                         Navigator.pushNamed(context, Register.id);
-                        emailController.clear();
-                        passwordController.clear();
                       },
                     ),
                   ],

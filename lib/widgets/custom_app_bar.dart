@@ -2,6 +2,7 @@
 
 import 'package:chat_app/constant.dart';
 import 'package:chat_app/helper/show_snack_bar.dart';
+import 'package:chat_app/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ AppBar customAppBar(BuildContext context) {
           icon: const Icon(Icons.logout),
           onPressed: () async {
             await FirebaseAuth.instance.signOut();
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, LogIn.id);
             showSnackBar(context, message: 'Log Out Successfully');
           },
         ),
