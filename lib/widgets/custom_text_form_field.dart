@@ -1,4 +1,5 @@
 import 'package:chat_app/constant.dart';
+import 'package:chat_app/utils/responsive_font_size.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -35,7 +36,13 @@ class CustomTextFormField extends StatelessWidget {
         prefixIcon: Icon(preIcon),
         suffixIcon: sufIcon,
         hintText: text,
-        hintStyle: const TextStyle(color: kSecondColor),
+        hintStyle: TextStyle(
+          color: kSecondColor,
+          fontSize: getResponsiveFontSize(
+            context,
+            fontSize: 14,
+          ),
+        ),
         border: customBorder(color: kSecondColor),
         enabledBorder: customBorder(color: kSecondColor),
       ),

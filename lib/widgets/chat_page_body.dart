@@ -1,5 +1,6 @@
 import 'package:chat_app/constant.dart';
 import 'package:chat_app/models/messages_model.dart';
+import 'package:chat_app/utils/responsive_font_size.dart';
 import 'package:chat_app/widgets/bubbles_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,22 +25,29 @@ class ChatPageBody extends StatelessWidget {
       children: [
         Expanded(
           child: ListView.builder(
-              reverse: true,
-              controller: scrollController,
-              itemCount: messagesList.length,
-              itemBuilder: (context, index) {
-                return messagesList[index].id == userId
-                    ? ChatBubbleForMe(
-                        message: messagesList[index],
-                      )
-                    : ChatBubbleForFriends(message: messagesList[index]);
-              }),
+            reverse: true,
+            controller: scrollController,
+            itemCount: messagesList.length,
+            itemBuilder: (context, index) {
+              return messagesList[index].id == userId
+                  ? ChatBubbleForMe(
+                      message: messagesList[index],
+                    )
+                  : ChatBubbleForFriends(message: messagesList[index]);
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(10),
           child: TextField(
             decoration: InputDecoration(
               hintText: 'Send Message',
+              hintStyle: TextStyle(
+                fontSize: getResponsiveFontSize(
+                  context,
+                  fontSize: 16,
+                ),
+              ),
               suffixIcon: const Icon(
                 Icons.send,
                 color: kPrimaryColor,
@@ -51,11 +59,13 @@ class ChatPageBody extends StatelessWidget {
             controller: textController,
             onSubmitted: (data) {
               if (data.isNotEmpty) {
-                messages.add({
-                  kMessage: data,
-                  kCreatedAt: DateTime.now(),
-                  kId: userId,
-                });
+                messages.add(
+                  {
+                    kMessage: data,
+                    kCreatedAt: DateTime.now(),
+                    kId: userId,
+                  },
+                );
                 textController.clear();
                 scrollController.animateTo(0,
                     duration: const Duration(seconds: 1),

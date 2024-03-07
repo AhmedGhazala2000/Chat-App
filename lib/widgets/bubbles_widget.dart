@@ -1,5 +1,6 @@
 import 'package:chat_app/constant.dart';
 import 'package:chat_app/models/messages_model.dart';
+import 'package:chat_app/utils/responsive_font_size.dart';
 import 'package:flutter/material.dart';
 
 class ChatBubbleForMe extends StatelessWidget {
@@ -22,7 +23,13 @@ class ChatBubbleForMe extends StatelessWidget {
             )),
         child: Text(
           message.message,
-          style: const TextStyle(color: kSecondColor, fontSize: 16),
+          style: TextStyle(
+            color: kSecondColor,
+            fontSize: getResponsiveFontSize(
+              context,
+              fontSize: 16,
+            ),
+          ),
         ),
       ),
     );
@@ -50,7 +57,13 @@ class ChatBubbleForFriends extends StatelessWidget {
             )),
         child: Text(
           message.message,
-          style: const TextStyle(color: kSecondColor, fontSize: 16),
+          style: TextStyle(
+            color: kSecondColor,
+            fontSize: getResponsiveFontSize(
+              context,
+              fontSize: 16,
+            ),
+          ),
         ),
       ),
     );

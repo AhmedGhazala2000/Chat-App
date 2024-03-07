@@ -1,4 +1,5 @@
 import 'package:chat_app/constant.dart';
+import 'package:chat_app/utils/responsive_font_size.dart';
 import 'package:flutter/material.dart';
 
 class CustomMaterialButton extends StatelessWidget {
@@ -13,11 +14,16 @@ class CustomMaterialButton extends StatelessWidget {
       shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
       minWidth: double.infinity,
       color: kSecondColor,
-      height: 47,
+      height: 50,
       onPressed: onPressed,
       child: Text(
         text,
-        style: const TextStyle(fontSize: 18),
+        style: TextStyle(
+          fontSize: getResponsiveFontSize(
+            context,
+            fontSize: 18,
+          ),
+        ),
       ),
     );
   }
@@ -36,13 +42,17 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Color(0xffC8ECE7),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: const Color(0xffC8ECE7),
+          fontSize: getResponsiveFontSize(
+            context,
             fontSize: 16,
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
