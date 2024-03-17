@@ -1,52 +1,23 @@
-import 'dart:developer';
-
-import 'package:chat_app/constant.dart';
-import 'package:chat_app/models/messages_model.dart';
-import 'package:chat_app/utils/responsive_font_size.dart';
+import 'package:chat_app/cubits/chat_cubit/chat_cubit.dart';
 import 'package:chat_app/widgets/chat_page_body.dart';
 import 'package:chat_app/widgets/custom_app_bar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatPage extends StatelessWidget {
-  ChatPage({Key? key}) : super(key: key);
+  const ChatPage({Key? key}) : super(key: key);
   static const String id = 'ChatPage';
-  final CollectionReference messages =
-      FirebaseFirestore.instance.collection(kCollectionMessages);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: messages.orderBy(kCreatedAt, descending: true).snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List<MessageModel> messagesList = [];
-          for (var doc in snapshot.data!.docs) {
-            messagesList.add(
-              MessageModel.fromJson(doc),
-            );
-          }
-          return Scaffold(
-            resizeToAvoidBottomInset:
-                MediaQuery.sizeOf(context).height < 400 ? false : true,
-            appBar: customAppBar(context),
-            body: ChatPageBody(messagesList: messagesList, messages: messages),
-          );
-        } else if (snapshot.hasError) {
-          log(snapshot.error.toString());
-          return Text(
-            'There was an error, Please try later !',
-            style: TextStyle(
-              fontSize: getResponsiveFontSize(
-                context,
-                fontSize: 16,
-              ),
-            ),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
+    return BlocProvider(
+      create: (context) => ChatCubit(),
+      child: Scaffold(
+        resizeToAvoidBottomInset:
+            MediaQuery.sizeOf(context).height < 400 ? false : true,
+        appBar: customAppBar(context),
+        body: const ChatPageBody(),
+      ),
     );
   }
 }

@@ -36,7 +36,7 @@ AppBar customAppBar(BuildContext context) {
         icon: const Icon(Icons.logout),
         onPressed: () async {
           await FirebaseAuth.instance.signOut();
-          Navigator.pushReplacementNamed(context, LogIn.id);
+          Navigator.pushReplacementNamed(context, LogInPage.id);
           showSnackBar(context, message: 'Log Out Successfully');
         },
       ),
